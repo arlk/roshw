@@ -1,0 +1,9 @@
+<launch>
+
+    <node name='turtle' pkg='turtlesim' type='turtlesim_node'>
+    </node>
+    <node name='controller' pkg='roshw' type='proportionCtrl.py'>
+    </node>
+
+
+</launch>
