@@ -1,3 +1,5 @@
+# Written by Mitchell Jones 5/3/16
+
 import sys, random, math, pygame
 from pygame.locals import *
 from math import sqrt,cos,sin,atan2
