@@ -60,7 +60,7 @@ class RRT(object):
         else
             return None #To do
 
-    def find_shortest_path():
+    def _find_shortest_path():
         k = len(self.tree.adjacency)-1
         short_path = [k]
         while short_path[-1] is not -1:
@@ -72,9 +72,10 @@ class RRT(object):
 
     def generate_tree(goal):
         new_node = self.init
-        while _distance(new_node, goal) < self.epsilon:
+        while _distance(new_node, goal) > self.epsilon:
             rand = _generate_random_node()
             nn, nn_arg = _nearest_neighbor(rand)
             new_node = _step_from_to(nn, rand)
             self.tree.add_node(new_node, nn_arg)
-        _find_shortest_path()
+        _find_shortest_path(goal)
+        self.path = np.append(self.path, [goal], axis = 0)
