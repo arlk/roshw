@@ -1,4 +1,4 @@
-# Written by Mitchell Jones 5/3/16
+# Written by Jonesy Jones 3/5/16
 
 import sys, random, math, pygame
 from pygame.locals import *
