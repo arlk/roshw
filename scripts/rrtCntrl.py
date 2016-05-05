@@ -1,3 +1,5 @@
+# Author: Aaron Lakshmanman
+
 import numpy as np
 from rrtPlanner import RRT
 
