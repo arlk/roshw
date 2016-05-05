@@ -34,6 +34,7 @@ class RRT(object):
         self.section = part_num
         self.world = Obstacles(part_num)
         self.path = None
+        self.cntrl = [np.zeros(2)]
 
     def _distance(self, c1, c2):
         if self.section == 1:
@@ -59,9 +60,9 @@ class RRT(object):
     def _step_from_to(self, c1, c2):
         if self.section == 1:
             if self._distance(c1, c2) < self.epsilon:
-                return c2
+                return c2, (c2-c1)/np.linalg.norm(c2-c1)
             else:
-                return c1 + self.epsilon*(c2-c1)/np.linalg.norm(c2-c1)
+                return c1 + self.epsilon*(c2-c1)/np.linalg.norm(c2-c1), self.epsilon*(c2-c1)/np.linalg.norm(c2-c1)
         else:
             return None #To do
 
@@ -76,6 +77,8 @@ class RRT(object):
         short_path.pop(0)
         nodes_array = np.asarray(self.tree.nodes)
         self.path = nodes_array[short_path]
+        cntrl_array = np.asarray(self.cntrl)
+        self.cntrl = cntrl_array[short_path]
 
     def generate_tree(self, goal, clearance):
         #constants
@@ -102,14 +105,18 @@ class RRT(object):
         new_node = self.init
         while self._distance(new_node, goal) > clearance:
             rand = self._generate_random_node()
-            nn, nn_arg = self._nearest_neighbor(rand)
-            new_node = self._step_from_to(nn, rand)
-            pygame.draw.line(screen,white,list((nn-self.world.room_offset)*100.0),list((new_node-self.world.room_offset)*100.0))
-            pygame.draw.circle(screen, green, map(int,list((np.array([0,0])-self.world.room_offset)*100)),5, 5)
-            pygame.draw.circle(screen, red, map(int,list((np.array([5,5])-self.world.room_offset)*100)),5, 5)
-            pygame.draw.line(screen,blue,list((rand-self.world.room_offset)*100.0),list((rand-self.world.room_offset)*100.0))
-            pygame.display.update()
-            if not self.world.is_colliding([new_node[0], new_node[1], 0]):
-                self.tree.add_node(new_node, nn_arg)
+            if not self.world.is_colliding([rand[0], rand[1], 0]):
+                nn, nn_arg = self._nearest_neighbor(rand)
+                new_node, u = self._step_from_to(nn, rand)
+
+                pygame.draw.line(screen,white,list((nn-self.world.room_offset)*100.0),list((new_node-self.world.room_offset)*100.0))
+                pygame.draw.circle(screen, green, map(int,list((np.array([0,0])-self.world.room_offset)*100)),5, 5)
+                pygame.draw.circle(screen, red, map(int,list((np.array([5,5])-self.world.room_offset)*100)),5, 5)
+                pygame.draw.line(screen,blue,list((rand-self.world.room_offset)*100.0),list((rand-self.world.room_offset)*100.0))
+                pygame.display.update()
+
+                if not self.world.is_colliding([new_node[0], new_node[1], 0]):
+                    self.tree.add_node(new_node, nn_arg)
+                    self.cntrl.append(u)
         self._find_shortest_path()
         self.path = np.append(self.path, [goal], axis = 0)

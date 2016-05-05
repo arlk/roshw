@@ -12,7 +12,7 @@ class Obstacles(object):
         self.wall_3 = fcl.CollisionObject(fcl.Box(8.0, 0.5, 0.5),transform.Transform(transform.Quaternion(), [2.50, 6.25, 0.25]))
         self.wall_4 = fcl.CollisionObject(fcl.Box(0.5, 8.0, 0.5),transform.Transform(transform.Quaternion(), [-1.25, 2.50, 0.25]))
         """ Obstacles """
-        self.obs_1 = fcl.CollisionObject(fcl.Box(2.0, 2.0, 1.0),transform.Transform(transform.Quaternion(), [2.50, 2.50, 0.50]))
+        self.obs_1 = fcl.CollisionObject(fcl.Box(2.3, 2.3, 1.0),transform.Transform(transform.Quaternion(), [2.50, 2.50, 0.50]))
         self.obs_2 = fcl.CollisionObject(fcl.Box(0.75, 0.75, 0.75),transform.Transform(transform.Quaternion(), [5.0, 1.0, 0.375]))
         self.obs_3 = fcl.CollisionObject(fcl.Box(0.75, 0.75, 0.75),transform.Transform(transform.Quaternion(), [3.0, 5.0, 0.375]))
         self.obs_4 = fcl.CollisionObject(fcl.Box(0.5, 0.5, 0.5),transform.Transform(transform.Quaternion(), [0.0, 3.0, 0.25]))
@@ -22,7 +22,7 @@ class Obstacles(object):
         self.obs_5_3 = fcl.CollisionObject(fcl.Box(0.5, 0.5, 0.15),transform.Transform(transform.Quaternion(), [0.5, -0.1, 0.275]))
         self.obs_5_4 = fcl.CollisionObject(fcl.Box(0.05, 0.25, 0.05),transform.Transform(transform.Quaternion(), [0.5, 0.0, 0.375]))
         """ Part 1 YouBot """
-        self.youbot_Box = fcl.Box(0.5701, 0.357, 0.6)
+        self.youbot_Box = fcl.Box(0.599, 0.4, 0.6)
         """ YouBot """
         self.section = part_num
         self.youbot = fcl.CollisionObject(self.youbot_Box,transform.Transform(transform.Quaternion(), [0.0, 0.0, 0.0]))
