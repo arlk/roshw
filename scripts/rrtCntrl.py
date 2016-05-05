@@ -1,4 +1,7 @@
 from __future__ import division
+
+# Author: Aaron Lakshmanman
+
 import numpy as np
 from rrtPlanner import *
 import matplotlib.pyplot as plt
