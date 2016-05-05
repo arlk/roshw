@@ -41,7 +41,7 @@ class Obstacles(object):
 
     def _create_youbot_object(self, config):
         if self.section == 1:
-            self.youbot = fcl.CollisionObject(self.youbot_Box,transform.Transform(transform.Quaternion(), config))
+            self.youbot = fcl.CollisionObject(self.youbot_Box, transform.Transform(transform.Quaternion(), config))
         else:
             pass # Section 2
 

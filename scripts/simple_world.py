@@ -1,5 +1,5 @@
 from __future__ import division
-import numpy as np 
+import numpy as np
 
 class obstacles(object):
     def __init__(self):
@@ -14,4 +14,4 @@ class obstacles(object):
             sides = org + clockwise*self.width[i]/2.
             self.vertices.append(sides)
         self.vertices.append(self.wall)
-        self.vertices = np.asarray(self.vertices)        
+        self.vertices = np.asarray(self.vertices)
