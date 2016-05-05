@@ -39,14 +39,20 @@ class RRT(object):
     def _distance(self, c1, c2):
         if self.section == 1:
             return np.linalg.norm(c1-c2)
-        else:
-            return None #To do
+        else: # ARM configuration space
+            c1 = np.asarray(c1)
+            c2 = np.asarray(c2)
+            dist3 = np.minimum(np.absolute(c1-c2),2*np.pi-np.absolute(c1-c2))
+            w = np.array([3,2,1])
+            return np.dot(w,dist3)
 
     def _generate_random_node(self):
         if self.section == 1:
             return np.random.rand(2)*self.world.room_dimensions + self.world.room_offset
         else:
-            return None #To do
+            jointRangeDeg = np.array([155,297,205])
+            jointRangeOffsetDeg = np.array([12.5,-2.5,0.0])-jointRangeDeg/2
+            return np.random.rand(3)*(jointRangeDeg*(np.pi/180))-(jointRangeOffsetDeg*(np.pi/180))
 
     def _nearest_neighbor(self, rand):
         nn = self.tree.nodes[0]
@@ -63,8 +69,15 @@ class RRT(object):
                 return c2, (c2-c1)/np.linalg.norm(c2-c1)
             else:
                 return c1 + self.epsilon*(c2-c1)/np.linalg.norm(c2-c1), self.epsilon*(c2-c1)/np.linalg.norm(c2-c1)
-        else:
-            return None #To do
+        else:                           #  ^^^  Check c2-c1
+            if self._distance(c1,c2) < self.epsilon:
+                return c2, torusVect(c1,c2)/distance(c1,c2)
+            else:
+                return c1 + self.epsilon*torusVect(c1,c2)/distance(c1,c2), self.epsilon*torusVect(c1,c2)/distance(c1,c2)
+        def torusVect(c1,c2):
+            c1 = np.array(c1)
+            c2 = np.array(c2)
+            return np.minimum(np.absolute(c1-c2),2*np.pi-np.absolute(c1-c2))
 
     def _find_shortest_path(self):
         k = len(self.tree.adjacency)-1
